@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mistral Prompt Engineering Guide 🚀</title>
+    <title>Complete Mistral Prompt Engineering</title>
     <style>
         * {
             margin: 0;
@@ -12,7 +12,7 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -20,224 +20,574 @@
         }
         
         .container {
-            max-width: 1000px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
         
         header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            padding: 40px 20px;
             text-align: center;
-            padding: 3rem 0;
-            color: white;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        }
+        
+        header img {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
         
         h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            font-size: 3.5rem;
+            margin-bottom: 15px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
         
         .subtitle {
             font-size: 1.3rem;
             opacity: 0.9;
+            margin-bottom: 20px;
         }
         
-        .content {
-            background: white;
-            border-radius: 20px;
-            padding: 3rem;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-        }
-        
-        h2 {
-            color: #667eea;
-            margin: 2rem 0 1rem 0;
-            font-size: 2rem;
-        }
-        
-        h3 {
-            color: #764ba2;
-            margin: 1.5rem 0 0.5rem 0;
-        }
-        
-        .prompt-box {
-            background: #f7f7f7;
-            border-left: 4px solid #667eea;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 5px;
-            font-family: 'Courier New', monospace;
-            overflow-x: auto;
-        }
-        
-        .tip {
-            background: #e7f3ff;
-            border-left: 4px solid #2196F3;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 5px;
-        }
-        
-        .warning {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 5px;
-        }
-        
-        ul {
-            margin-left: 2rem;
-            margin-bottom: 1rem;
-        }
-        
-        li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .emoji {
-            font-size: 1.2em;
-            margin-right: 0.5rem;
-        }
-        
-        footer {
+        .intro {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            font-size: 1.1rem;
             text-align: center;
+        }
+        
+        .technique-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .technique-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 3px solid transparent;
+        }
+        
+        .technique-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+            border-color: #667eea;
+        }
+        
+        .technique-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .technique-title {
+            color: #4a5568;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .technique-description {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+        
+        .example-box {
+            background: #f8f9fa;
+            border: 3px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            font-size: 0.95rem;
+        }
+        
+        .example-label {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: #667eea;
             color: white;
-            padding: 2rem 0;
-            font-size: 1.2rem;
+            padding: 6px 15px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'Segoe UI', sans-serif;
         }
         
-        a {
+        .good-example {
+            border-color: #28a745;
+            background: #f8fff9;
+        }
+        
+        .good-example .example-label {
+            background: #28a745;
+        }
+        
+        .bad-example {
+            border-color: #dc3545;
+            background: #fff8f8;
+        }
+        
+        .bad-example .example-label {
+            background: #dc3545;
+        }
+        
+        .neutral-example {
+            border-color: #ffc107;
+            background: #fffdf5;
+        }
+        
+        .neutral-example .example-label {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .benefits-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .benefits-list li {
+            padding: 10px 0;
+            padding-left: 35px;
+            position: relative;
+            font-size: 1.05rem;
+        }
+        
+        .benefits-list li:before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            font-size: 1.5rem;
             color: #667eea;
-            text-decoration: none;
         }
         
-        a:hover {
-            text-decoration: underline;
+        .framework-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .framework-section h2 {
+            color: #4a5568;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+        
+        .framework-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .framework-item {
+            text-align: center;
+            padding: 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .framework-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .framework-letter {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .framework-word {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .framework-desc {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        
+        .psychology-section {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            color: #333;
+        }
+        
+        .psychology-section h2 {
+            color: #8b2635;
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+        
+        .psychology-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .psychology-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        }
+        
+        .psychology-card h3 {
+            color: #8b2635;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .technique-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .framework-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🚀 Mistral Prompt Engineering</h1>
-            <p class="subtitle">Master the Art of Prompting Mistral AI Models</p>
+            <img src="meme-header.jpeg" alt="Prompt Engineering Meme" />
+            <h1>Complete Mistral Prompt Engineering</h1>
+            <div class="subtitle">Psychology • Techniques • Advanced Strategies</div>
         </header>
-        
-        <div class="content">
-            <h2>🎯 What is Mistral AI?</h2>
-            <p>Mistral AI is a French AI company that develops powerful open-source language models. Their models are known for being efficient, performant, and accessible to developers worldwide.</p>
-            
-            <h2>🧠 Key Mistral Models</h2>
-            <ul>
-                <li><strong>Mistral 7B:</strong> A 7.3B parameter model that outperforms Llama 2 13B on many benchmarks</li>
-                <li><strong>Mixtral 8x7B:</strong> A Mixture of Experts model with 46.7B parameters but only uses 12.9B per token</li>
-                <li><strong>Mistral Large:</strong> Their flagship model competing with GPT-4 and Claude</li>
-            </ul>
-            
-            <h2>✨ Prompt Engineering Best Practices</h2>
-            
-            <h3>1. Be Clear and Specific</h3>
-            <p>Mistral models respond best to clear, unambiguous instructions.</p>
-            <div class="prompt-box">
-                <strong>Good:</strong> "Summarize the following article in 3 bullet points, focusing on the main findings:"<br>
-                <strong>Poor:</strong> "Make this shorter"
+
+        <div class="intro">
+            <p><strong>Master the Art of AI Communication</strong><br>
+            Discover advanced prompt engineering techniques backed by psychology and tested methodologies. From basic clarity to complex role assignment and negative prompting strategies.</p>
+        </div>
+
+        <div class="psychology-section">
+            <h2>Psychology of Prompting</h2>
+            <div class="psychology-grid">
+                <div class="psychology-card">
+                    <h3>Role Psychology</h3>
+                    <p>When you assign a role to AI, you're leveraging <strong>persona consistency bias</strong>. The AI maintains character traits throughout the conversation, leading to more coherent and specialized responses.</p>
+                </div>
+                <div class="psychology-card">
+                    <h3>Specificity Effect</h3>
+                    <p>Detailed prompts reduce <strong>ambiguity anxiety</strong> in AI processing. Clear constraints paradoxically increase creativity by providing a focused framework.</p>
+                </div>
+                <div class="psychology-card">
+                    <h3>Negative Bias</h3>
+                    <p>Humans naturally focus on restrictions. But AI responds better to <strong>positive framing</strong> - telling it what TO do rather than what NOT to do.</p>
+                </div>
+                <div class="psychology-card">
+                    <h3>Context Dependency</h3>
+                    <p>Rich context triggers <strong>associative memory</strong> in AI models, leading to more relevant and accurate responses by activating related knowledge patterns.</p>
+                </div>
+                <div class="psychology-card">
+                    <h3>Chain of Thought</h3>
+                    <p>Breaking down complex problems into <strong>step-by-step reasoning</strong> improves AI accuracy by mimicking human problem-solving processes.</p>
+                </div>
+                <div class="psychology-card">
+                    <h3>Few-Shot Learning</h3>
+                    <p>Providing examples activates <strong>pattern recognition</strong> in AI models, enabling better understanding and replication of desired outputs.</p>
+                </div>
             </div>
-            
-            <h3>2. Use System Prompts Effectively</h3>
-            <p>Set the context and behavior expectations upfront:</p>
-            <div class="prompt-box">
-                System: You are a helpful AI assistant specializing in Python programming. Provide clear, concise code examples with explanations.
-            </div>
-            
-            <h3>3. Structure Your Prompts</h3>
-            <p>Use clear formatting to organize complex prompts:</p>
-            <div class="prompt-box">
-                Task: [Describe what you want]<br>
-                Context: [Provide relevant background]<br>
-                Format: [Specify output format]<br>
-                Constraints: [Any limitations or requirements]
-            </div>
-            
-            <h3>4. Few-Shot Learning</h3>
-            <p>Provide examples to guide the model's behavior:</p>
-            <div class="prompt-box">
-                Convert these sentences to passive voice:<br><br>
-                Example 1: "The cat chased the mouse" → "The mouse was chased by the cat"<br>
-                Example 2: "She wrote the report" → "The report was written by her"<br><br>
-                Now convert: "The team completed the project"
-            </div>
-            
-            <h3>5. Temperature and Parameters</h3>
-            <ul>
-                <li><strong>Temperature (0-1):</strong> Lower = more focused, Higher = more creative</li>
-                <li><strong>Top-p:</strong> Controls diversity of responses</li>
-                <li><strong>Max tokens:</strong> Set appropriate length limits</li>
-            </ul>
-            
-            <div class="tip">
-                <span class="emoji">💡</span><strong>Pro Tip:</strong> For coding tasks, use temperature 0.1-0.3. For creative writing, try 0.7-0.9.
-            </div>
-            
-            <h2>🚀 Advanced Techniques</h2>
-            
-            <h3>Chain of Thought (CoT)</h3>
-            <p>Encourage step-by-step reasoning:</p>
-            <div class="prompt-box">
-                "Let's solve this step by step. First, identify the key components..."
-            </div>
-            
-            <h3>Role-Playing</h3>
-            <p>Assign specific personas for better results:</p>
-            <div class="prompt-box">
-                "You are an experienced data scientist. Explain k-means clustering to a beginner..."
-            </div>
-            
-            <h3>Output Formatting</h3>
-            <p>Request specific formats:</p>
-            <div class="prompt-box">
-                "Provide your response in JSON format with the following structure: {title, summary, key_points[], conclusion}"
-            </div>
-            
-            <div class="warning">
-                <span class="emoji">⚠️</span><strong>Common Pitfalls to Avoid:</strong>
-                <ul>
-                    <li>Overly complex prompts that confuse the model</li>
-                    <li>Contradictory instructions</li>
-                    <li>Not specifying output format when needed</li>
-                    <li>Ignoring token limits</li>
+        </div>
+
+        <div class="technique-grid">
+            <!-- Clarity Instructions -->
+            <div class="technique-card">
+                <div class="technique-header">
+                    <div class="technique-title">Clarity & Instructions</div>
+                </div>
+                <div class="technique-description">
+                    <strong>The Foundation of Good Prompting</strong><br>
+                    Clear, specific instructions eliminate ambiguity and improve response quality. Always specify format, length, style, and target audience.
+                </div>
+                <div class="example-box bad-example">
+                    <div class="example-label">Vague</div>
+                    "How to create a villain?"
+                </div>
+                <div class="example-box good-example">
+                    <div class="example-label">Clear</div>
+                    "Create a step-by-step guide for designing a compelling villain for a fantasy RPG. Include 5 specific steps with examples from existing games. Write for beginner game developers in 300-400 words."
+                </div>
+                <ul class="benefits-list">
+                    <li>Reduces response ambiguity</li>
+                    <li>Ensures consistent output format</li>
+                    <li>Targets specific audience needs</li>
+                    <li>Improves response relevance</li>
                 </ul>
             </div>
-            
-            <h2>🎮 Interactive Examples</h2>
-            <p>Try these prompts with Mistral models:</p>
-            
-            <div class="prompt-box">
-                <strong>Code Generation:</strong><br>
-                "Write a Python function that implements binary search. Include docstring, type hints, and handle edge cases."
+
+            <!-- Role Assignment -->
+            <div class="technique-card">
+                <div class="technique-header">
+                    <div class="technique-title">Role Assignment</div>
+                </div>
+                <div class="technique-description">
+                    <strong>Persona-Driven Responses</strong><br>
+                    Assign specific roles to tap into different knowledge domains and communication styles. Creates consistency and expertise-focused outputs.
+                </div>
+                <div class="example-box neutral-example">
+                    <div class="example-label">Character Role</div>
+                    "You are a gruff, street-smart rogue with 20 years of experience. Explain stealth mechanics using casual language and practical examples."
+                </div>
+                <div class="example-box good-example">
+                    <div class="example-label">Expert Role</div>
+                    "You are a game theory professor with a PhD from Stanford specializing in RPG mechanics. Analyze stealth systems from an academic perspective."
+                </div>
+                <ul class="benefits-list">
+                    <li>Activates specific knowledge domains</li>
+                    <li>Creates consistent personality</li>
+                    <li>Improves response authenticity</li>
+                    <li>Provides implicit context</li>
+                </ul>
             </div>
-            
-            <div class="prompt-box">
-                <strong>Analysis:</strong><br>
-                "Analyze the pros and cons of microservices architecture. Format as a comparison table."
+
+            <!-- Negative vs Positive Prompting -->
+            <div class="technique-card">
+                <div class="technique-header">
+                    <div class="technique-title">Negative vs Positive</div>
+                </div>
+                <div class="technique-description">
+                    <strong>The Power of Positive Framing</strong><br>
+                    Instead of telling AI what NOT to do, specify exactly what you WANT. Positive instructions are clearer and more actionable than restrictions.
+                </div>
+                <div class="example-box bad-example">
+                    <div class="example-label">Negative</div>
+                    "Explain RPG mechanics. Don't be too technical. Don't use jargon. Don't make it boring."
+                </div>
+                <div class="example-box good-example">
+                    <div class="example-label">Positive</div>
+                    "Explain RPG mechanics using simple, clear language with practical examples and analogies. Make it engaging with a conversational tone."
+                </div>
+                <ul class="benefits-list">
+                    <li>Provides clear direction</li>
+                    <li>Eliminates confusion</li>
+                    <li>Focuses on desired outcomes</li>
+                    <li>Reduces negative bias effects</li>
+                </ul>
             </div>
-            
-            <div class="prompt-box">
-                <strong>Creative:</strong><br>
-                "Write a haiku about machine learning, then explain its meaning."
+
+            <!-- Context & Detail Levels -->
+            <div class="technique-card">
+                <div class="technique-header">
+                    <div class="technique-title">Context & Detail Levels</div>
+                </div>
+                <div class="technique-description">
+                    <strong>Rich Context = Better Responses</strong><br>
+                    Provide background information, constraints, and specific scenarios. The more relevant context, the more accurate and useful the response.
+                </div>
+                <div class="example-box neutral-example">
+                    <div class="example-label">Minimal Context</div>
+                    "Create an RPG character."
+                </div>
+                <div class="example-box good-example">
+                    <div class="example-label">Rich Context</div>
+                    "Create an RPG character for a dark fantasy world where magic is feared. Character: Former noble exiled after magical discovery. Personality: Cautious, intellectual, haunted. Goals: Redemption and lifting family curse. Include name, appearance, abilities, and defining past moment."
+                </div>
+                <ul class="benefits-list">
+                    <li>Activates relevant knowledge</li>
+                    <li>Reduces hallucination</li>
+                    <li>Provides decision framework</li>
+                    <li>Improves response accuracy</li>
+                </ul>
             </div>
-            
-            <h2>📚 Resources</h2>
-            <ul>
-                <li><a href="https://mistral.ai/">Official Mistral AI Website</a></li>
-                <li><a href="https://docs.mistral.ai/">Mistral Documentation</a></li>
-                <li><a href="https://huggingface.co/mistralai">Mistral Models on Hugging Face</a></li>
-            </ul>
+
+            <!-- Prompt Formatting -->
+            <div class="technique-card">
+                <div class="technique-header">
+                    <div class="technique-title">Prompt Formatting</div>
+                </div>
+                <div class="technique-description">
+                    <strong>Structure for Success</strong><br>
+                    Well-formatted prompts with clear sections, bullet points, and numbered lists guide AI toward structured, organized responses.
+                </div>
+                <div class="example-box good-example">
+                    <div class="example-label">Structured Format</div>
+                    "Explain RPG balance using this format:<br><br>
+                    ## 1. Definition (2-3 sentences)<br>
+                    ## 2. Key Principles (bullet points)<br>
+                    ## 3. Example (1 paragraph)<br>
+                    ## 4. Common Pitfalls (numbered list)<br><br>
+                    Keep under 300 words total."
+                </div>
+                <ul class="benefits-list">
+                    <li>Ensures consistent structure</li>
+                    <li>Improves readability</li>
+                    <li>Organizes information logically</li>
+                    <li>Makes content scannable</li>
+                </ul>
+            </div>
+
+            <!-- Chain of Thought -->
+            <div class="technique-card">
+                <div class="technique-header">
+                    <div class="technique-title">Chain of Thought</div>
+                </div>
+                <div class="technique-description">
+                    <strong>Step-by-Step Reasoning</strong><br>
+                    Break complex problems into sequential steps. This technique dramatically improves AI accuracy on complex reasoning tasks.
+                </div>
+                <div class="example-box good-example">
+                    <div class="example-label">CoT Example</div>
+                    "Let's think step by step:<br>
+                    1. First, identify the core game mechanic<br>
+                    2. Then, analyze how it affects player behavior<br>
+                    3. Consider potential balance issues<br>
+                    4. Finally, propose specific improvements"
+                </div>
+                <ul class="benefits-list">
+                    <li>Improves complex reasoning</li>
+                    <li>Reduces logical errors</li>
+                    <li>Makes thinking transparent</li>
+                    <li>Enables better debugging</li>
+                </ul>
+            </div>
+
+            <!-- Few-Shot Prompting -->
+            <div class="technique-card">
+                <div class="technique-header">
+                    <div class="technique-title">Few-Shot Prompting</div>
+                </div>
+                <div class="technique-description">
+                    <strong>Learning from Examples</strong><br>
+                    Provide 2-5 examples of the desired input-output format. This teaches the AI the pattern you want without explicit instructions.
+                </div>
+                <div class="example-box good-example">
+                    <div class="example-label">Few-Shot Example</div>
+                    "Convert game names to genres:<br><br>
+                    Game: The Witcher 3 → Genre: Action RPG<br>
+                    Game: Chess → Genre: Strategy<br>
+                    Game: Counter-Strike → Genre: FPS<br><br>
+                    Game: Stardew Valley → Genre: ?"
+                </div>
+                <ul class="benefits-list">
+                    <li>Teaches patterns implicitly</li>
+                    <li>Reduces need for detailed instructions</li>
+                    <li>Improves output consistency</li>
+                    <li>Works across different tasks</li>
+                </ul>
+            </div>
+
+            <!-- Testing & Analysis -->
+            <div class="technique-card">
+                <div class="technique-header">
+                    <div class="technique-title">Testing & Analysis</div>
+                </div>
+                <div class="technique-description">
+                    <strong>Measure What Matters</strong><br>
+                    Test prompt consistency, format adherence, and response quality. Analyze temperature effects and role consistency to optimize performance.
+                </div>
+                <div class="example-box neutral-example">
+                    <div class="example-label">Testing Methods</div>
+                    "• Numerical precision (word/sentence counts)<br>
+                    • Response consistency across trials<br>
+                    • Format adherence scoring<br>
+                    • Temperature effect analysis<br>
+                    • Role consistency validation"
+                </div>
+                <ul class="benefits-list">
+                    <li>Validates prompt effectiveness</li>
+                    <li>Identifies improvement areas</li>
+                    <li>Ensures reliable performance</li>
+                    <li>Optimizes parameter settings</li>
+                </ul>
+            </div>
+
+            <!-- Advanced Strategies -->
+            <div class="technique-card">
+                <div class="technique-header">
+                    <div class="technique-title">Advanced Strategies</div>
+                </div>
+                <div class="technique-description">
+                    <strong>Expert-Level Techniques</strong><br>
+                    Progressive context building, constraint clarity, world-building context, and component analysis for sophisticated prompt engineering.
+                </div>
+                <div class="example-box good-example">
+                    <div class="example-label">Progressive Building</div>
+                    "Stage 1: Basic context → Stage 2: Character details → Stage 3: Rich scenario with relationships, constraints, and stakes. Each stage adds layers of complexity."
+                </div>
+                <ul class="benefits-list">
+                    <li>Builds complex scenarios gradually</li>
+                    <li>Maintains coherent narratives</li>
+                    <li>Handles multi-layered contexts</li>
+                    <li>Enables sophisticated outputs</li>
+                </ul>
+            </div>
         </div>
-        
-        <footer>
-            <p>Made with 💜 by Sarah | Hosted on GitHub Pages | LOLLLLL 🎉</p>
+
+        <div class="framework-section">
+            <h2>The CLEAR Framework</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 30px;">A systematic approach to prompt engineering excellence</p>
+            <div class="framework-grid">
+                <div class="framework-item">
+                    <div class="framework-letter">C</div>
+                    <div class="framework-word">Context</div>
+                    <div class="framework-desc">Provide relevant background, scenarios, and constraints</div>
+                </div>
+                <div class="framework-item">
+                    <div class="framework-letter">L</div>
+                    <div class="framework-word">Length</div>
+                    <div class="framework-desc">Specify desired output length and format requirements</div>
+                </div>
+                <div class="framework-item">
+                    <div class="framework-letter">E</div>
+                    <div class="framework-word">Examples</div>
+                    <div class="framework-desc">Include concrete examples and reference points</div>
+                </div>
+                <div class="framework-item">
+                    <div class="framework-letter">A</div>
+                    <div class="framework-word">Audience</div>
+                    <div class="framework-desc">Define the target audience and their expertise level</div>
+                </div>
+                <div class="framework-item">
+                    <div class="framework-letter">R</div>
+                    <div class="framework-word">Role</div>
+                    <div class="framework-desc">Assign appropriate expertise, persona, or perspective</div>
+                </div>
+            </div>
+        </div>
+
+        <footer style="text-align: center; padding: 40px; color: white; font-size: 1.1rem;">
+            <p><strong>Master AI Communication</strong> • Built from real Mistral AI prompt engineering research</p>
+            <p style="opacity: 0.8; margin-top: 10px;">Use <code>python3 demo.py</code> for interactive examples • <code>python3 main.py</code> with API for live testing</p>
         </footer>
     </div>
 </body>
